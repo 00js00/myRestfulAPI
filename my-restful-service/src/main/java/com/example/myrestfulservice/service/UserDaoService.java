@@ -15,9 +15,9 @@ public class UserDaoService {
     private static int userCount = 3;
 
     static {
-        users.add(new User(1, "Kenneth", new Date()));
-        users.add(new User(2, "Alice", new Date()));
-        users.add(new User(3, "Elena", new Date()));
+        users.add(new User(1, "Kenneth", new Date(),"pwd1","701010-1111111"));
+        users.add(new User(2, "Alice", new Date(),"pwd12","801111-2222222"));
+        users.add(new User(3, "Elena", new Date(),"pwd13","901313-1111111"));
     }
 
     private static int usersCount = 3;
@@ -66,6 +66,8 @@ public class UserDaoService {
         } else {
             storedUser.setName(newUser.getName());
             storedUser.setJoinDate(new Date());
+            storedUser.setPassword(newUser.getPassword());
+            storedUser.setSsn(newUser.getSsn());
             return storedUser;
         }
     }

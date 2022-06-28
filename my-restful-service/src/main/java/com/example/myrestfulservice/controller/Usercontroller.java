@@ -3,12 +3,25 @@ package com.example.myrestfulservice.controller;
 import com.example.myrestfulservice.beans.User;
 import com.example.myrestfulservice.exception.UserNotFoundException;
 import com.example.myrestfulservice.service.UserDaoService;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+//method import
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,19 +33,51 @@ public class Usercontroller {
         this.service = service;
     }
     @GetMapping
-    public List<User> retrieveAllUsers(){
-        return service.findAll();
+//    public List<User> retrieveAllUsers(){
+//        return service.findAll();
+//    }
+    public ResponseEntity<CollectionModel<EntityModel<User>>> retrieveAllUsers(){
+        List<User> users = service.findAll();
+        List<EntityModel<User>> result = new ArrayList<>();
+
+        for (User user: users){
+
+            EntityModel entityModel = EntityModel.of(user);
+            entityModel.add(linkTo(methodOn(this.getClass()).retrieveUser(user.getId())).withRel("detail"));
+            result.add(entityModel);
+        }
+        return ResponseEntity.ok(CollectionModel.of(result,linkTo(methodOn(this.getClass()).retrieveAllUsers()).withSelfRel()));
     }
 
     @GetMapping("/{id}")
-    public User retrieveUser(@PathVariable(value = "id") int id ){
+//    public User retrieveUser(@PathVariable(value = "id") int id ){
+//        //return service.findOne(id);
+//        User user = service.findOne(id);
+//        if(user == null){
+//            throw new UserNotFoundException("id=" + id);
+//        }
+//        return user;
+//    }
+
+//    hateoas
+    public ResponseEntity retrieveUser(@PathVariable(value = "id") int id ){
         //return service.findOne(id);
         User user = service.findOne(id);
         if(user == null){
             throw new UserNotFoundException("id=" + id);
         }
-        return user;
+        EntityModel entityModel = EntityModel.of(user);
+
+//        staic import methods X
+//        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
+        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        entityModel.add(linkTo.withRel("all-users"));
+//        link to all user
+
+        return ResponseEntity.ok(entityModel);
     }
+
+
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){

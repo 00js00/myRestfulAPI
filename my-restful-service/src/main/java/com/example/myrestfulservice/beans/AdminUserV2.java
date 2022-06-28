@@ -1,0 +1,21 @@
+package com.example.myrestfulservice.beans;
+
+
+import com.fasterxml.jackson.annotation.JsonFilter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonFilter("UserInfoV2")
+// jung bok no
+public class AdminUserV2  extends  AdminUser{
+    private String grade;
+}
