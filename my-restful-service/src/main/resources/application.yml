@@ -12,6 +12,14 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+#spring:
+#  messages: <1 key>
+#  mvc: <1 key>
+  security:
+    user:
+      name: username
+      password: passw0rd
+
 management:
   endpoints:
     web:
