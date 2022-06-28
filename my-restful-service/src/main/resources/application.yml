@@ -1,12 +1,19 @@
 server:
   port: 8088
-  name: test1
 
 logging:
   level:
-    org.springframework: debug
-
+    org.springframework: info
 
 spring:
-  message:
+  messages:
     basename: messages
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

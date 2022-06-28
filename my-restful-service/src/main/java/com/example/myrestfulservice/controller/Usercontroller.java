@@ -6,6 +6,9 @@ import com.example.myrestfulservice.service.UserDaoService;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.EntityLinks;
@@ -32,7 +35,10 @@ public class Usercontroller {
     public Usercontroller(UserDaoService service) {
         this.service = service;
     }
+
+
     @GetMapping
+    @ApiOperation(value = "all user list search", notes = "search all user list")
 //    public List<User> retrieveAllUsers(){
 //        return service.findAll();
 //    }
@@ -50,6 +56,10 @@ public class Usercontroller {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "detail user list search", notes = "search detail user list")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "user id", required = true, paramType = "path")
+    })
 //    public User retrieveUser(@PathVariable(value = "id") int id ){
 //        //return service.findOne(id);
 //        User user = service.findOne(id);
