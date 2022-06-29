@@ -8,10 +8,10 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Builder
 public class Post {
     @Id

@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +25,7 @@ import java.util.List;
 //@JsonIgnoreProperties(value={"password","ssn"})
 @ApiModel(description = "사용자 상세 정보")
 @Entity
+@Builder
 public class User {
     @Id
     @GeneratedValue
